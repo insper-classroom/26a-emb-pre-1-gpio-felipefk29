@@ -2,7 +2,7 @@
 #include "hardware/gpio.h"
 #include "pico/stdlib.h"
 
-// fixing debounce
+// fixing debounce again, now with a function that returns a boolean and is used in the main loop
 
 static const int FIRST_GPIO = 2;
 static const int BTN_PIN_G  = 28;
