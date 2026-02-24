@@ -2,10 +2,12 @@
 #include "hardware/gpio.h"
 #include "pico/stdlib.h"
 
+// fixing debounce
+
 static const int FIRST_GPIO = 2;
 static const int BTN_PIN_G  = 28;
 
-static const int bits[10] = {
+static  const int bits[10] = {
     0x3f,  // 0
     0x06,  // 1
     0x5b,  // 2
@@ -26,7 +28,7 @@ static void seven_seg_init(void) {
     }
 }
 
-static void seven_seg_display(int digit) {
+static void seven_seconds_display(int digit) {
     if (digit < 0 || digit > 9) {
         digit = 0; 
     }
@@ -50,7 +52,7 @@ int main(void) {
     gpio_pull_up(BTN_PIN_G);
 
     seven_seg_init();
-    seven_seg_display(cnt);
+    seven_seconds_display(cnt);
 
     int last_btn = gpio_get(BTN_PIN_G); 
 
@@ -63,7 +65,7 @@ int main(void) {
                 cnt = 0;
             }
 
-            seven_seg_display(cnt);
+            seven_seconds_display(cnt);
             printf("cnt: %d\n", cnt);
         }
 
