@@ -1,48 +1,51 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include "hardware/gpio.h"
-#include <stdbool.h>
 
 const int BTN_PIN = 26;
 const int BTN_PIN_2 = 7;
 
-static bool debounce(int pin){
-    if (gpio_get(pin)) {
-        return false;
-    }
-    sleep_ms(50);
-    if (gpio_get(pin)) {
-        return false;
-    }
-    
-    while (!gpio_get(pin)) {
-    }
-    sleep_ms(50);
+int main(void) {
+  stdio_init_all();
 
-    return true;
-}
+  gpio_init(BTN_PIN);
+  gpio_set_dir(BTN_PIN, GPIO_IN);
+  gpio_pull_up(BTN_PIN);
 
+  gpio_init(BTN_PIN_2);
+  gpio_set_dir(BTN_PIN_2, GPIO_IN);
+  gpio_pull_up(BTN_PIN_2);
 
-int main() {
-    stdio_init_all();
+  int cnt_1 = 0;
+  int cnt_2 = 0;
 
-    gpio_init(BTN_PIN);
-    gpio_set_dir(BTN_PIN, GPIO_IN);
-    gpio_pull_up(BTN_PIN);
+  const int DEBOUNCE_MS = 30;
 
-    gpio_init(BTN_PIN_2);
-    gpio_set_dir(BTN_PIN_2, GPIO_IN);
-    gpio_pull_up(BTN_PIN_2);
-    int cnt_1 = 0;
-    int cnt_2 = 0;
-
-    while (true) {
-
-        if (debounce(BTN_PIN)) {
-            printf("Botao 1: %d\n", cnt_1++);
+  while (true) {
+    if (!gpio_get(BTN_PIN)) {
+      sleep_ms(DEBOUNCE_MS);
+      if (!gpio_get(BTN_PIN)) {
+        printf("Botao 1: %d\n", cnt_1);
+        cnt_1++;
+        while (!gpio_get(BTN_PIN)) {
+          sleep_ms(1);
         }
-        if (debounce(BTN_PIN_2)) {
-            printf("Botao 2: %d\n", cnt_2++);
-        }
+        sleep_ms(DEBOUNCE_MS);
+      }
     }
+
+    if (!gpio_get(BTN_PIN_2)) {
+      sleep_ms(DEBOUNCE_MS);
+      if (!gpio_get(BTN_PIN_2)) {
+        printf("Botao 2: %d\n", cnt_2);
+        cnt_2++;
+        while (!gpio_get(BTN_PIN_2)) {
+          sleep_ms(1);
+        }
+        sleep_ms(DEBOUNCE_MS);
+      }
+    }
+
+    sleep_ms(1);
+  }
 }
