@@ -5,6 +5,23 @@
 const int BTN_PIN = 26;
 const int BTN_PIN_2 = 7;
 
+static void debounce(pin){
+    if (gpio_get(pin)) {
+        return false;
+    }
+    sleep_ms(50);
+    if (gpio_get(pin)) {
+        return false;
+    }
+    
+    while (!gpio_get(pin)) {
+    }
+    sleep_ms(50);
+
+    return true;
+}
+
+
 int main() {
     stdio_init_all();
 
@@ -20,11 +37,13 @@ int main() {
 
     while (true) {
 
-        if (!gpio_get(BTN_PIN)) {
+        if (debounce(BTN_PIN)) {
+            cnt_1++;
             printf("Botao 1: %d\n", cnt_1++);
         }
 
-        if (!gpio_get(BTN_PIN_2)) {
+        if (debounce(BTN_PIN_2)) {
+            cnt_2++;
             printf("Botao 2: %d\n", cnt_2++);
         }
     }
