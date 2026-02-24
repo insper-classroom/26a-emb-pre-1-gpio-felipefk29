@@ -33,21 +33,21 @@ int main() {
     if (!gpio_get(BTN_PIN_RED)) {
       gpio_put(LED_PIN_R, 1);
       sleep_ms(300);
-      gpio_put(LED_PIN_Y, 1);
-      sleep_ms(300);     
       gpio_put(LED_PIN_P, 1);
-      sleep_ms(300);
+      sleep_ms(300);     
       gpio_put(LED_PIN_B, 1);
+      sleep_ms(300);
+      gpio_put(LED_PIN_Y, 1);
       while (!gpio_get(BTN_PIN_RED)) {
       };
     } else {
       gpio_put(LED_PIN_R, 0);
       sleep_ms(300);
-      gpio_put(LED_PIN_Y, 0);
-      sleep_ms(300);
       gpio_put(LED_PIN_P, 0);
       sleep_ms(300);
       gpio_put(LED_PIN_B, 0);
+      sleep_ms(300);
+      gpio_put(LED_PIN_Y, 0);
     }
     // Use delay de 300 ms entre os estados!
   }
